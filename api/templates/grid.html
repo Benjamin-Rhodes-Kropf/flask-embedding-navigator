@@ -5,44 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3x3 Button Grid</title>
     <style>
+        :root {
+            --bg-color: #f0f0f0; /* Light mode background */
+            --text-color: #000; /* Light mode text */
+            --button-bg-color: #007bff; /* Button background */
+            --button-text-color: #fff; /* Button text color */
+        }
+        [data-theme="dark"] {
+            --bg-color: #333; /* Dark mode background */
+            --text-color: #fff; /* Dark mode text */
+            --button-bg-color: #0056b3; /* Button background for dark mode */
+            --button-text-color: #fff; /* Button text color for dark mode */
+        }
         body, html {
             height: 100%;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0; /* Light grey background */
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
         }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 100px); /* Adjusted for square size */
-            gap: 20px; /* Increased gap for better spacing */
+            grid-template-columns: repeat(3, 100px);
+            gap: 20px;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow to the grid container for depth */
-            border-radius: 10px; /* Rounded corners for the grid container */
-            background: white; /* Solid color background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: white;
         }
         .grid-item {
-            width: 100px; /* Width for square */
-            height: 100px; /* Height for square */
+            width: 100px;
+            height: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         .grid-item button {
-            background-color: #007bff; /* Bootstrap primary color */
-            color: white;
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
             border: none;
-            width: 90%; /* Slightly less than container for padding */
-            height: 90%; /* Slightly less than container for padding */
+            width: 90%;
+            height: 90%;
             cursor: pointer;
-            border-radius: 5px; /* Rounded corners for buttons */
-            transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s, color 0.3s;
         }
         .grid-item button:hover {
-            background-color: #0056b3; /* Darken the button a bit on hover */
-            transform: translateY(-2px); /* Slight lift effect on hover */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -55,6 +80,20 @@
     </div>
     {% endfor %}
 </div>
+<button class="theme-toggle" onclick="toggleTheme()">Light Mode</button>
+
+<script>
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.querySelector('.theme-toggle').textContent = 'Dark Mode';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.querySelector('.theme-toggle').textContent = 'Light Mode';
+        }
+    }
+</script>
 
 </body>
 </html>
