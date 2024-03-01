@@ -1,4 +1,3 @@
-<!-- templates/grid.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,19 +11,38 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #f0f0f0; /* Light grey background */
         }
         .grid-container {
             display: grid;
-            grid-template-columns: auto auto auto;
-            gap: 10px;
-            padding: 10px;
+            grid-template-columns: repeat(3, 100px); /* Adjusted for square size */
+            gap: 20px; /* Increased gap for better spacing */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow to the grid container for depth */
+            border-radius: 10px; /* Rounded corners for the grid container */
+            background: white; /* Solid color background */
         }
         .grid-item {
-            background-color: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            font-size: 30px;
-            text-align: center;
+            width: 100px; /* Width for square */
+            height: 100px; /* Height for square */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .grid-item button {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white;
+            border: none;
+            width: 90%; /* Slightly less than container for padding */
+            height: 90%; /* Slightly less than container for padding */
+            cursor: pointer;
+            border-radius: 5px; /* Rounded corners for buttons */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+        }
+        .grid-item button:hover {
+            background-color: #0056b3; /* Darken the button a bit on hover */
+            transform: translateY(-2px); /* Slight lift effect on hover */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect on hover */
         }
     </style>
 </head>
