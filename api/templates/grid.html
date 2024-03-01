@@ -29,16 +29,16 @@
         }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 100px);
-            gap: 20px;
-            padding: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1vw;
+            padding: 1vw;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             background: white;
+            width: 50vw; /* Adjusted to be 50% of the viewport width */
+            aspect-ratio: 1 / 1; /* Ensures the container is always square */
         }
         .grid-item {
-            width: 100px;
-            height: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -47,8 +47,8 @@
             background-color: var(--button-bg-color);
             color: var(--button-text-color);
             border: none;
-            width: 90%;
-            height: 90%;
+            width: 80%; /* Adjust size within grid item */
+            height: 80%; /* Adjust size within grid item, maintaining square shape */
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s, transform 0.2s, color 0.3s;
