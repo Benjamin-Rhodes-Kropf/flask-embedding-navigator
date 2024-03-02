@@ -17,44 +17,74 @@ def home():
 def about():
     return 'About'
 
-# New route for the grid
-@app.route('/grid', methods=['GET','POST'])
-def grid(): 
-    print("request received")
-    print(f"request method: {request.method}")
+# # New route for the grid
+# @app.route('/grid', methods=['GET','POST'])
+# def grid(): 
+#     print("request received")
+#     print(f"request method: {request.method}")
 
-    # Example of retrieving a vector from form data; adjust based on your actual data source
+#     # Example of retrieving a vector from form data; adjust based on your actual data source
+#     if request.method == 'POST':
+#         data = request.get_json()  # Get the JSON data sent with the POST request
+#         vector = data.get('vector')  # Retrieve the vector from the JSON data
+#         print(f"vector: {vector}")
+#         if vector:
+#             vector = list(map(float, vector))
+#     else:
+#      vector = torch.rand(768).tolist()
+
+#     # Query the index
+#     print("Querying the index...")
+#     response = index.query(
+#         vector=vector,
+#         top_k=9,
+#         include_values=True
+#     )
+
+#     for match in response["matches"]:
+#         print(match["id"])
+
+#     # get all links in response
+#     links = []
+#     vectors = []
+#     for match in response["matches"]:
+#         links.append(match["id"])
+#         vectors.append(match["values"])
+    
+#     # Create a list of tuples where each tuple is (link, vector)
+#     items = list(zip(links, vectors))
+
+#     return render_template('grid.html', items=items)  # Pass the links to the template
+
+@app.route('/grid', methods=['GET', 'POST'])
+def grid():
     if request.method == 'POST':
-        data = request.get_json()  # Get the JSON data sent with the POST request
-        vector = data.get('vector')  # Retrieve the vector from the JSON data
-        print(f"vector: {vector}")
+        data = request.get_json()
+        vector = data.get('vector')
         if vector:
             vector = list(map(float, vector))
+            response = index.query(
+                vector=vector,
+                top_k=9,
+                include_values=True
+            )
+            # Prepare the data to send back to the client
+            items = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+            return jsonify(items)
+        else:
+            return jsonify({'error': 'No vector provided'}), 400
     else:
-     vector = torch.rand(768).tolist()
+        vector = torch.rand(768).tolist()
+        response = index.query(
+            vector=vector,
+            top_k=9,
+            include_values=True
+        )
+        links = [match["id"] for match in response["matches"]]
+        vectors = [match["values"] for match in response["matches"]]
+        items = list(zip(links, vectors))
+        return render_template('grid.html', items=items)
 
-    # Query the index
-    print("Querying the index...")
-    response = index.query(
-        vector=vector,
-        top_k=9,
-        include_values=True
-    )
-
-    for match in response["matches"]:
-        print(match["id"])
-
-    # get all links in response
-    links = []
-    vectors = []
-    for match in response["matches"]:
-        links.append(match["id"])
-        vectors.append(match["values"])
-    
-    # Create a list of tuples where each tuple is (link, vector)
-    items = list(zip(links, vectors))
-
-    return render_template('grid.html', items=items)  # Pass the links to the template
 
 if __name__ == '__main__':
     app.run(debug=True)

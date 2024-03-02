@@ -169,31 +169,66 @@
     //     console.error('Error querying vector:', error);
     // });
 
+    // function queryVector(vector) {
+    //  console.log(vector);
+    // event.preventDefault(); // Prevent default link navigation
+    // fetch('/grid', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'Accept': 'application/json', // Expecting a JSON response
+    //     },
+    //     body: JSON.stringify({vector: JSON.parse(vector)}), // Send the vector as an actual array
+    // })
+    // .then(response => {
+    //     if (!response.ok) {
+    //         throw new Error('Network response was not ok: ' + response.statusText);
+    //     }
+    //     return response.json();
+    // })
+    // .then(data => {
+    //     console.log('Query results:', data);
+    //     // Process and display your query results here
+    // })
+    // .catch(error => {
+    //     console.error('Error querying vector:', error);
+    // });
     function queryVector(vector) {
-     console.log(vector);
     event.preventDefault(); // Prevent default link navigation
     fetch('/grid', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json', // Expecting a JSON response
         },
-        body: JSON.stringify({vector: JSON.parse(vector)}), // Send the vector as an actual array
+        body: JSON.stringify({ vector: JSON.parse(vector) }),
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.statusText);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Query results:', data);
-        // Process and display your query results here
+    .then(response => response.json())
+    .then(items => {
+        // Assuming you have a container with the class 'grid-container'
+        const gridContainer = document.querySelector('.grid-container');
+        // Clear existing items
+        gridContainer.innerHTML = '';
+
+        // Add new items
+        items.forEach(item => {
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            gridItem.onclick = function() { queryVector(JSON.stringify(item.vector)); };
+
+            const image = document.createElement('img');
+            image.src = item.link;
+            image.alt = 'Dress';
+            image.style = 'width: 100%; height: auto; border-radius: 5px;';
+
+            gridItem.appendChild(image);
+            gridContainer.appendChild(gridItem);
+        });
     })
     .catch(error => {
         console.error('Error querying vector:', error);
     });
 }
+
 
 </script>
 
