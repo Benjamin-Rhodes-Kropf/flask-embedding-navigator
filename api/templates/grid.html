@@ -57,6 +57,26 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+        .button-link {
+        display: inline-block;
+        background-color: var(--button-bg-color);
+        color: var(--button-text-color);
+        border: none;
+        width: 80%;
+        height: 80%;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s, transform 0.2s, color 0.3s;
+        text-align: center;
+        line-height: 2.5; /* Adjust based on your design needs */
+        text-decoration: none;
+    }
+
+.button-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -73,14 +93,109 @@
 </head>
 <body>
 
-<div class="grid-container">
-    {% for n in range(1, 10) %}
+<!-- <div class="grid-container">
+    {% for image_url in links %}
+    <div class="grid-item" data-embedding="{{ vector }}">
+        <a href="{{ image_url }}" target="_blank">
+            <img src="{{ image_url }}" alt="Dress {{ loop.index }}" style="width: 100%; height: auto; border-radius: 5px;">
+        </a>
+    </div>
+    {% else %}
     <div class="grid-item">
-        <button>Button {{n}}</button>
+        No dresses found.
     </div>
     {% endfor %}
+</div> -->
+
+<div class="grid-container">
+    {% for link, vector in items %}
+    <div class="grid-item" onclick="queryVector('{{ vector|tojson|safe }}')">
+        <img src="{{ link }}" alt="Dress {{ loop.index }}" style="width: 100%; height: auto; border-radius: 5px;">
+    </div>
+    {% else %}
+    <div class="grid-item">No dresses found.</div>
+    {% endfor %}
 </div>
+
+    
 <button class="theme-toggle" onclick="toggleTheme()">Light Mode</button>
+
+<script>
+    // function queryVector(vector) {
+
+    //     //print the vector to console
+    //     console.log(vector);
+
+    //     event.preventDefault(); // Prevent default link navigation
+    //     fetch('/grid', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({vector: JSON.parse(vector)}),
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log('Query results:', data);
+    //         // Process and display your query results here
+    //         // For example, update the images displayed based on the response
+    //     })
+    //     .catch(error => {
+    //         console.error('Error querying vector:', error);
+    //     });
+    // }
+
+    // function queryVector(vector) {
+    // event.preventDefault(); // Prevent default link navigation
+    // fetch('/grid', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'Accept': 'application/json', // Expecting a JSON response
+    //     },
+    //     body: JSON.stringify({vector: vector}), // No need to parse it as it's already a JSON string
+    // })
+    // .then(response => {
+    //     if (!response.ok) {
+    //         throw new Error('Network response was not ok: ' + response.statusText);
+    //     }
+    //     return response.json();
+    // })
+    // .then(data => {
+    //     console.log('Query results:', data);
+    //     // Process and display your query results here
+    // })
+    // .catch(error => {
+    //     console.error('Error querying vector:', error);
+    // });
+
+    function queryVector(vector) {
+     console.log(vector);
+    event.preventDefault(); // Prevent default link navigation
+    fetch('/grid', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json', // Expecting a JSON response
+        },
+        body: JSON.stringify({vector: JSON.parse(vector)}), // Send the vector as an actual array
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Query results:', data);
+        // Process and display your query results here
+    })
+    .catch(error => {
+        console.error('Error querying vector:', error);
+    });
+}
+
+</script>
 
 <script>
     function toggleTheme() {
