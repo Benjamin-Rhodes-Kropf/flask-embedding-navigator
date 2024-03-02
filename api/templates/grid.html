@@ -27,16 +27,25 @@
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
         }
+        
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr); /* Always three columns */
             gap: 1vw;
             padding: 1vw;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             background: white;
-            width: 50vw; /* Adjusted to be 50% of the viewport width */
-            aspect-ratio: 1 / 1; /* Ensures the container is always square */
+            width: 80vw; /* Adjust the width to your preference */
+            max-width: 1200px; /* Maximum width to prevent the grid from becoming too large */
+            margin: auto; /* Center the grid horizontally */
+        }
+
+        .grid-item img {
+            width: 100%; /* Full width */
+            height: auto; /* Auto height to maintain aspect ratio */
+            border-radius: 5px;
+            object-fit: cover; /* This will cover the area, could also use 'contain' */
         }
         .grid-item {
             display: flex;
@@ -93,20 +102,6 @@
 </head>
 <body>
 
-<!-- <div class="grid-container">
-    {% for image_url in links %}
-    <div class="grid-item" data-embedding="{{ vector }}">
-        <a href="{{ image_url }}" target="_blank">
-            <img src="{{ image_url }}" alt="Dress {{ loop.index }}" style="width: 100%; height: auto; border-radius: 5px;">
-        </a>
-    </div>
-    {% else %}
-    <div class="grid-item">
-        No dresses found.
-    </div>
-    {% endfor %}
-</div> -->
-
 <div class="grid-container">
     {% for link, vector in items %}
     <div class="grid-item" onclick="queryVector('{{ vector|tojson|safe }}')">
@@ -123,7 +118,7 @@
 <script>
     function queryVector(vector) {
     event.preventDefault(); // Prevent default link navigation
-    fetch('/grid', {
+    fetch('/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
