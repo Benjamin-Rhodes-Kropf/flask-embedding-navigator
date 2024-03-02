@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from pinecone import Pinecone, ServerlessSpec, PodSpec
+from pinecone import Pinecone
 import pinecone
 import torch
 
