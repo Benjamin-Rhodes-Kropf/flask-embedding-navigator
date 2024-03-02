@@ -20,7 +20,10 @@ def grid():
                 top_k=9,
                 include_values=True
             )
-            items = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+            things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+            items = things[1:5] + [things[0]] + things[5:]
+
+
             return jsonify(items)
         else:
             return jsonify({'error': 'No vector provided'}), 400
