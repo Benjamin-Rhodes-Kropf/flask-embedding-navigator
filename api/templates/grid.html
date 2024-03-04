@@ -38,15 +38,14 @@
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr); /* Always three columns */
-            gap: 1vw;
-            padding: 1vw;
+            /* gap: 1.5*min(1vw, (2/3)*1vh); */
+            padding: min(0.5vw, (2/3)*0.5vh);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             background: white;
-            height: min(90vw, 90vh);
-            width: min(90vw, 90vh);
-            max-width: 1200px; /* Maximum width to prevent the grid from becoming too large */
-            max-height: 1200px; /* Maximum width to prevent the grid from becoming too large */
+            --grid-width:min(90vw, (2/3)*90vh);
+            width: var(--grid-width);
+            height:calc(var(--grid-width) * 1.5)-3*min(0.5vw, (2/3)*0.5vh);
             margin: auto; /* Center the grid horizontally */
             justify-content: center; /* Center the child horizontally */
             align-items: center; /* Center the child vertically */
@@ -54,18 +53,19 @@
         }
 
         .grid-item img {
-            height: 100%; /* Full width */
-            width: auto; /* Auto height to maintain aspect ratio */
-            border-radius: 5px;
+            width: 100%; /* Full width */
+            height: auto; /* Auto height to maintain aspect ratio */
             object-fit: contain; /* This will cover the area, could also use 'contain' */
-            opacity: 100%;
+            border-radius:5%;
             
         }
         .grid-item {
             display: flex;
-            height: min(27.5vw, 27.5vh); /* Full width */
+            width: min(90vw, (2/3)*90vh)/3; /* Full width */
+            padding: min(0.5vw, (2/3)*0.5vh);
             justify-content: center;
             align-items: center;
+            /* outline:black solid 2px;  */
         }
 
         .grid-item button {
@@ -130,7 +130,7 @@
 </div>
 
     
-<button class="theme-toggle" onclick="toggleTheme()">Light Mode</button>
+<!-- <button class="theme-toggle" onclick="toggleTheme()">Light Mode</button> -->
 
 <script>
     function queryVector(vector) {
