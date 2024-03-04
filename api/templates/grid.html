@@ -18,7 +18,7 @@
             --button-text-color: #fff; /* Button text color for dark mode */
         }
         body, html {
-            height: 100%;
+            /* height: 100%; */
             margin: 0;
             display: flex;
             justify-content: center;
@@ -28,6 +28,13 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
+        .parent-container {
+            display: flex;
+            justify-content: center; /* Center the child horizontally */
+            align-items: center; /* Center the child vertically */
+            height: 100vh; /* Set the height of the parent container to the full viewport height */
+        }
+
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr); /* Always three columns */
@@ -36,22 +43,31 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             background: white;
-            width: 80vw; /* Adjust the width to your preference */
+            height: min(90vw, 90vh);
+            width: min(90vw, 90vh);
             max-width: 1200px; /* Maximum width to prevent the grid from becoming too large */
+            max-height: 1200px; /* Maximum width to prevent the grid from becoming too large */
             margin: auto; /* Center the grid horizontally */
+            justify-content: center; /* Center the child horizontally */
+            align-items: center; /* Center the child vertically */
+
         }
 
         .grid-item img {
-            width: 100%; /* Full width */
-            height: auto; /* Auto height to maintain aspect ratio */
+            height: 100%; /* Full width */
+            width: auto; /* Auto height to maintain aspect ratio */
             border-radius: 5px;
-            object-fit: cover; /* This will cover the area, could also use 'contain' */
+            object-fit: contain; /* This will cover the area, could also use 'contain' */
+            opacity: 100%;
+            
         }
         .grid-item {
             display: flex;
+            height: min(27.5vw, 27.5vh); /* Full width */
             justify-content: center;
             align-items: center;
         }
+
         .grid-item button {
             background-color: var(--button-bg-color);
             color: var(--button-text-color);
@@ -79,12 +95,12 @@
         text-align: center;
         line-height: 2.5; /* Adjust based on your design needs */
         text-decoration: none;
-    }
+        }
 
-.button-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+        .button-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
         .theme-toggle {
             position: fixed;
@@ -101,15 +117,16 @@
     </style>
 </head>
 <body>
-
-<div class="grid-container">
-    {% for link, vector in items %}
-    <div class="grid-item" onclick="queryVector('{{ vector|tojson|safe }}')">
-        <img src="{{ link }}" alt="Dress {{ loop.index }}" style="width: 100%; height: auto; border-radius: 5px;">
+<div class="parent-container">
+    <div class="grid-container">
+        {% for link, vector in items %}
+        <div class="grid-item" onclick="queryVector('{{ vector|tojson|safe }}')">
+            <img src="{{ link }}" alt="Dress {{ loop.index }}">
+        </div>
+        {% else %}
+        <div class="grid-item">No dresses found.</div>
+        {% endfor %}
     </div>
-    {% else %}
-    <div class="grid-item">No dresses found.</div>
-    {% endfor %}
 </div>
 
     
@@ -141,8 +158,6 @@
             const image = document.createElement('img');
             image.src = item.link;
             image.alt = 'Dress';
-            image.style = 'width: 100%; height: auto; border-radius: 5px;';
-
             gridItem.appendChild(image);
             gridContainer.appendChild(gridItem);
         });
