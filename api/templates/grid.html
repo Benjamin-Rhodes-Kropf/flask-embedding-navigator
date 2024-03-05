@@ -120,7 +120,7 @@
 <div class="parent-container">
     <div class="grid-container">
         {% for link, vector in items %}
-        <div class="grid-item" onclick="queryVector('{{ vector|tojson|safe }}')">
+        <div class="grid-item" onclick="window.open('{{ link }}')" data-vector="{{ vector }}">
             <img src="{{ link }}" alt="Dress {{ loop.index }}">
         </div>
         {% else %}
@@ -153,11 +153,11 @@
         items.forEach(item => {
             const gridItem = document.createElement('div');
             gridItem.className = 'grid-item';
-            gridItem.onclick = function() { queryVector(JSON.stringify(item.vector)); };
-
+            gridItem.onclick = function() { window.open(item.link);};
+            gridItem.setAttribute('data-vector', item.vector);
             const image = document.createElement('img');
             image.src = item.link;
-            image.alt = 'Dress';
+            image.alt = "DRESS";
             gridItem.appendChild(image);
             gridContainer.appendChild(gridItem);
         });
@@ -165,8 +165,55 @@
     .catch(error => {
         console.error('Error querying vector:', error);
     });
-}
+    }
 
+    
+    document.addEventListener('wheel', function(e) {
+        if (e.shiftKey) {
+            e.preventDefault(); // Prevent default zoom action
+            if (!zoomThrottleTimeout) { // Check if zoom is currently throttled
+                var zoomIn = e.deltaY < 0;
+                console.log(zoomIn ? "zooming in" : "zooming out");
+            }
+            return; // Skip scroll direction logic when zooming
+        }
+
+        determineScrollDirection(e.deltaX, e.deltaY);
+    }, { passive: false });
+
+
+    function determineScrollDirection(deltaX,deltaY) {
+        const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+        const gridContainer = document.querySelector('.grid-container');
+        grid = Array.from(gridContainer.children);
+        let direction = '';
+        if (angle >= -22.5 && angle < 22.5) {
+            direction = 'East';
+            queryVector((grid[5].getAttribute('data-vector'))); 
+        } else if (angle >= 22.5 && angle < 67.5) {
+            direction = 'SE';
+            queryVector((grid[8].getAttribute('data-vector'))); 
+        } else if (angle >= 67.5 && angle < 112.5) {
+            direction = 'South';
+            queryVector((grid[7].getAttribute('data-vector'))); 
+        } else if (angle >= 112.5 && angle < 157.5) {
+            direction = 'SW';
+            queryVector((grid[6].getAttribute('data-vector'))); 
+        } else if (angle >= -67.5 && angle < -22.5) {
+            direction = 'NE';
+            queryVector((grid[2].getAttribute('data-vector'))); 
+        } else if (angle >= -112.5 && angle < -67.5) {
+            direction = 'North';
+            queryVector((grid[1].getAttribute('data-vector'))); 
+        } else if (angle >= -157.5 && angle < -112.5) {
+            direction = 'NW';
+            queryVector((grid[0].getAttribute('data-vector'))); 
+        } else {
+            direction = 'West';
+            queryVector((grid[3].getAttribute('data-vector'))); 
+        }
+        console.log("You scrolled in direction: " + direction);
+    }
 
 </script>
 
