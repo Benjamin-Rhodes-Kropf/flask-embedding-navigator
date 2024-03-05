@@ -120,7 +120,7 @@
 <div class="parent-container">
     <div class="grid-container">
         {% for link, vector in items %}
-        <div class="grid-item" onclick="window.open('{{ link }}')" data-vector="{{ vector }}">
+        <div class="grid-item" onclick="queryVector('{{ vector|tojson|safe }}')" data-vector="{{ vector }}">
             <img src="{{ link }}" alt="Dress {{ loop.index }}">
         </div>
         {% else %}
@@ -153,7 +153,7 @@
         items.forEach(item => {
             const gridItem = document.createElement('div');
             gridItem.className = 'grid-item';
-            gridItem.onclick = function() { window.open(item.link);};
+            gridItem.onclick = function() { queryVector(JSON.stringify(item.vector))};
             gridItem.setAttribute('data-vector', JSON.stringify(item.vector));
             const image = document.createElement('img');
             image.src = item.link;
