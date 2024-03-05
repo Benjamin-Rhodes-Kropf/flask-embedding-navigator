@@ -170,15 +170,6 @@
     
     document.addEventListener('wheel', function(e) {
         e.preventDefault();
-        if (e.shiftKey) {
-            e.preventDefault(); // Prevent default zoom action
-            if (!zoomThrottleTimeout) { // Check if zoom is currently throttled
-                var zoomIn = e.deltaY < 0;
-                alert(zoomIn ? "zooming in" : "zooming out");
-            }
-            return; // Skip scroll direction logic when zooming
-        }
-
         determineScrollDirection(e.deltaX, e.deltaY);
     }, { passive: false });
 
