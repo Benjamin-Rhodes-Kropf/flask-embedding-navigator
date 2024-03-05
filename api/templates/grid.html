@@ -154,7 +154,7 @@
             const gridItem = document.createElement('div');
             gridItem.className = 'grid-item';
             gridItem.onclick = function() { window.open(item.link);};
-            gridItem.setAttribute('data-vector', item.vector);
+            gridItem.setAttribute('data-vector', JSON.stringify(item.vector));
             const image = document.createElement('img');
             image.src = item.link;
             image.alt = "DRESS";
@@ -169,11 +169,12 @@
 
     
     document.addEventListener('wheel', function(e) {
+        e.preventDefault();
         if (e.shiftKey) {
             e.preventDefault(); // Prevent default zoom action
             if (!zoomThrottleTimeout) { // Check if zoom is currently throttled
                 var zoomIn = e.deltaY < 0;
-                console.log(zoomIn ? "zooming in" : "zooming out");
+                alert(zoomIn ? "zooming in" : "zooming out");
             }
             return; // Skip scroll direction logic when zooming
         }
@@ -182,7 +183,15 @@
     }, { passive: false });
 
 
-    function determineScrollDirection(deltaX,deltaY) {
+    var lastSwipeTime = 0; // Step 1: Declare a variable to keep track of the last swipe time
+
+    function determineScrollDirection(deltaX, deltaY) {
+        const currentTime = Date.now(); // Get the current time in milliseconds
+        if (currentTime - lastSwipeTime < 1500) {
+            console.log("Swipe too fast, waiting for timeout."); // Optional: Log a message or handle this case as needed
+            return; // Exit the function to prevent the swipe action
+        }
+
         const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
         const gridContainer = document.querySelector('.grid-container');
         grid = Array.from(gridContainer.children);
@@ -213,6 +222,8 @@
             queryVector((grid[3].getAttribute('data-vector'))); 
         }
         console.log("You scrolled in direction: " + direction);
+        lastSwipeTime = currentTime; // Update the last swipe time after a successful swipe
+
     }
 
 </script>
