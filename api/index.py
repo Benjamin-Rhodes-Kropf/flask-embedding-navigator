@@ -20,9 +20,23 @@ def grid():
                 top_k=9,
                 include_values=True
             )
-            things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+            things = [
+                {'link': match["id"], 
+                 'vector': match["values"], 
+                 'nested_items':[{'nested_link': "", 'nested_vector':[]}]
+                 } for match in response["matches"]]
             items = things[1:5] + [things[0]] + things[5:]
 
+             # query each of the additional 8 results and store all nine vectors of each in a array
+            for i in range(9):
+                response = index.query(
+                    vector=items[i]['vector'],
+                    top_k=9,
+                    include_values=True
+                )
+                items[i]['nested_items'] = [
+                    {'nested_link': match["id"], 
+                     'nested_vector': match["values"]} for match in response["matches"]]
 
             return jsonify(items)
         else:
@@ -36,6 +50,7 @@ def grid():
         )
         links = [match["id"] for match in response["matches"]]
         vectors = [match["values"] for match in response["matches"]]
+
         items = list(zip(links, vectors))
         return render_template('grid.html', items=items)
 
