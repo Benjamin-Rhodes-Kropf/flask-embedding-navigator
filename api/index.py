@@ -2,11 +2,32 @@ from flask import Flask, render_template, request, jsonify
 from pinecone import Pinecone
 import pinecone
 import random
+from algoliasearch.search_client import SearchClient
+# !pip install --upgrade 'algoliasearch>=3.0,<4.0'
+
 
 app = Flask(__name__)
 
 pc = pinecone.Pinecone(api_key="b76cad94-53ae-4524-9156-b3450a92ce4a", environment="gcp-starter")
 index = pc.Index("dresses")
+
+@app.route('/search', methods=['POST'])
+def algoliaSearch():
+    client = SearchClient.create('BV318UGLE0', '5079b75c76a6ce41a2da8e354d39e3ec')
+    algoliaIndex = client.init_index('productData')
+    data = request.get_json()
+    searchTerm = data.get('query')
+    initial = algoliaIndex.search(searchTerm)
+    this = None
+    try:
+        this=initial['hits'][:9]
+        things = [{'link': dress["image"], 'vector': index.query(id=dress["image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
+        items = things[1:5] + [things[0]] + things[5:]
+    except:
+        this=algoliaIndex.search("")['hits'][:9]
+        things = [{'link': dress["image"], 'vector': index.query(id=dress["image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
+        items = things[1:5] + [things[0]] + things[5:]
+    return items
 
 @app.route('/', methods=['GET', 'POST'])
 def grid():

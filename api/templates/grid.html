@@ -1,88 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>3x3 Button Grid</title>
     <style>
-        :root {
-            --bg-color: #f0f0f0; /* Light mode background */
-            --text-color: #000; /* Light mode text */
-            --button-bg-color: #007bff; /* Button background */
-            --button-text-color: #fff; /* Button text color */
-        }
-        [data-theme="dark"] {
-            --bg-color: #333; /* Dark mode background */
-            --text-color: #fff; /* Dark mode text */
-            --button-bg-color: #0056b3; /* Button background for dark mode */
-            --button-text-color: #fff; /* Button text color for dark mode */
-        }
-        body, html {
-            /* height: 100%; */
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        .parent-container {
-            display: flex;
-            justify-content: center; /* Center the child horizontally */
-            align-items: center; /* Center the child vertically */
-            height: 100vh; /* Set the height of the parent container to the full viewport height */
-        }
+      :root {
+        --bg-color: #f0f0f0; /* Light mode background */
+        --text-color: #000; /* Light mode text */
+        --button-bg-color: #007bff; /* Button background */
+        --button-text-color: #fff; /* Button text color */
+      }
+      [data-theme="dark"] {
+        --bg-color: #333; /* Dark mode background */
+        --text-color: #fff; /* Dark mode text */
+        --button-bg-color: #0056b3; /* Button background for dark mode */
+        --button-text-color: #fff; /* Button text color for dark mode */
+      }
+      body,
+      html {
+        /* height: 100%; */
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+      }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Always three columns */
-            /* gap: 1.5*min(1vw, (2/3)*1vh); */
-            padding: min(0.5vw, (2/3)*0.5vh);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            background: white;
-            --grid-width:min(90vw, (2/3)*90vh);
-            width: var(--grid-width);
-            height:calc(var(--grid-width) * 1.5)-3*min(0.5vw, (2/3)*0.5vh);
-            margin: auto; /* Center the grid horizontally */
-            justify-content: center; /* Center the child horizontally */
-            align-items: center; /* Center the child vertically */
+      .parent-container {
+        display: flex;
+        flex-direction: column; /* Add this line */
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
 
-        }
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Always three columns */
+        /* gap: 1.5*min(1vw, (2/3)*1vh); */
+        padding: min(0.5vw, (2/3) * 0.5vh);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        background: white;
+        --grid-width: min(80vw, (2/3) * 80vh);
+        width: var(--grid-width);
+        height: calc(var(--grid-width) * 1.5)-3 * min(0.5vw, (2/3) * 0.5vh);
+        margin: auto; /* Center the grid horizontally */
+        justify-content: center; /* Center the child horizontally */
+        align-items: center; /* Center the child vertically */
+      }
 
-        .grid-item img {
-            width: 100%; /* Full width */
-            height: auto; /* Auto height to maintain aspect ratio */
-            object-fit: contain; /* This will cover the area, could also use 'contain' */
-            border-radius:5%;
-            
-        }
-        .grid-item {
-            display: flex;
-            width: min(90vw, (2/3)*90vh)/3; /* Full width */
-            padding: min(0.5vw, (2/3)*0.5vh);
-            justify-content: center;
-            align-items: center;
-            /* outline:black solid 2px;  */
-        }
+      .grid-item img {
+        width: 100%; /* Full width */
+        height: auto; /* Auto height to maintain aspect ratio */
+        object-fit: contain; /* This will cover the area, could also use 'contain' */
+        border-radius: 5%;
+      }
+      .grid-item {
+        display: flex;
+        width: min(90vw, (2/3) * 90vh) / 3; /* Full width */
+        padding: min(0.5vw, (2/3) * 0.5vh);
+        justify-content: center;
+        align-items: center;
+        /* outline:black solid 2px;  */
+      }
 
-        .grid-item button {
-            background-color: var(--button-bg-color);
-            color: var(--button-text-color);
-            border: none;
-            width: 80%; /* Adjust size within grid item */
-            height: 80%; /* Adjust size within grid item, maintaining square shape */
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s, transform 0.2s, color 0.3s;
-        }
-        .grid-item button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .button-link {
+      .grid-item button {
+        background-color: var(--button-bg-color);
+        color: var(--button-text-color);
+        border: none;
+        width: 80%; /* Adjust size within grid item */
+        height: 80%; /* Adjust size within grid item, maintaining square shape */
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s, transform 0.2s, color 0.3s;
+      }
+      .grid-item button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .button-link {
         display: inline-block;
         background-color: var(--button-bg-color);
         color: var(--button-text-color);
@@ -95,131 +95,224 @@
         text-align: center;
         line-height: 2.5; /* Adjust based on your design needs */
         text-decoration: none;
-        }
+      }
 
-        .button-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+      .button-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
 
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px;
-            cursor: pointer;
-            background-color: var(--button-bg-color);
-            color: var(--button-text-color);
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+      .search-container {
+        --widthe: min(80vw, (2/3) * 80vh)-10px;
+        width: var(--widthe); /* Use the same width as the grid container */
+        text-align: center;
+        margin-top: 20px;
+        align-self: end;
+      }
+
+      #search-input {
+        --this-width: min(80vw, (2/3) * 80vh);
+        width: var(--this-width);
+        padding: 10px;
+        margin: auto; /* Center the slider */
+        font-size: 14px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        align-self: flex-end;
+      }
+
+      .zoom-container {
+        --grid-width: min(80vw, (2/3) * 80vh);
+        text-align: center;
+        width: var(--grid-width);
+        /* align-self: flex-end; Aligns the item at the top of the container */
+      }
+
+      #zoom-slider {
+        width: 100%;
+        margin: auto; /* Center the slider */
+        margin-bottom: 20px;
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px;
+        cursor: pointer;
+        background-color: var(--button-bg-color);
+        color: var(--button-text-color);
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+      }
     </style>
-</head>
-<body>
-<div class="parent-container">
-    <div class="grid-container">
+  </head>
+  <body>
+    <div class="parent-container">
+      <div class="search-container">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Your journey to the perfect dress starts here..."
+          onkeydown="if(event.key === 'Enter' || event.keyCode === 13) {searchItems(this.value); this.value='';}"
+          />
+      </div>
+      <div class="grid-container">
         {% for link, vector in items %}
-        <div class="grid-item" onclick="queryVector('{{ vector|tojson|safe }}')" data-vector="{{ vector }}">
-            <img src="{{ link }}" alt="Dress {{ loop.index }}">
+        <div
+          class="grid-item"
+          onclick="queryVector('{{ vector|tojson|safe }}')"
+          data-vector="{{ vector }}"
+        >
+          <img src="{{ link }}" alt="Dress {{ loop.index }}" />
         </div>
         {% else %}
         <div class="grid-item">No dresses found.</div>
         {% endfor %}
+      </div>
+      <div class="zoom-container">
+        <input
+          type="range"
+          id="zoom-slider"
+          min="0.5"
+          max="10"
+          step="0.1"
+          value="1"
+          onchange="adjustZoom(this.value)"
+        />
+      </div>
     </div>
-</div>
 
-    
-<!-- <button class="theme-toggle" onclick="toggleTheme()">Light Mode</button> -->
+    <!-- <button class="theme-toggle" onclick="toggleTheme()">Light Mode</button> -->
 
-<script>
-    function queryVector(vector) {
-    event.preventDefault(); // Prevent default link navigation
-    fetch('/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+    <script>
+      function searchItems(query) {
+        console.log("Search")
+        event.preventDefault(); // Prevent default link navigation
+        fetch("/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ query: query }),
+        })
+          .then((response) => response.json())
+          .then((items) => {
+            // Assuming you have a container with the class 'grid-container'
+            const gridContainer = document.querySelector(".grid-container");
+            // Clear existing items
+            gridContainer.innerHTML = "";
+
+            // Add new items
+            items.forEach((item) => {
+              const gridItem = document.createElement("div");
+              gridItem.className = "grid-item";
+              gridItem.onclick = function () {
+                queryVector(JSON.stringify(item.vector));
+              };
+              gridItem.setAttribute("data-vector", JSON.stringify(item.vector));
+              const image = document.createElement("img");
+              image.src = item.link;
+              image.alt = "DRESS";
+              gridItem.appendChild(image);
+              gridContainer.appendChild(gridItem);
+            });
+          })
+          .catch((error) => {
+            console.error("Error querying vector:", error);
+          });
+      }
+
+      function queryVector(vector) {
+        event.preventDefault(); // Prevent default link navigation
+        fetch("/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ vector: JSON.parse(vector) }),
+        })
+          .then((response) => response.json())
+          .then((items) => {
+            // Assuming you have a container with the class 'grid-container'
+            const gridContainer = document.querySelector(".grid-container");
+            // Clear existing items
+            gridContainer.innerHTML = "";
+
+            // Add new items
+            items.forEach((item) => {
+              const gridItem = document.createElement("div");
+              gridItem.className = "grid-item";
+              gridItem.onclick = function () {
+                queryVector(JSON.stringify(item.vector));
+              };
+              gridItem.setAttribute("data-vector", JSON.stringify(item.vector));
+              const image = document.createElement("img");
+              image.src = item.link;
+              image.alt = "DRESS";
+              gridItem.appendChild(image);
+              gridContainer.appendChild(gridItem);
+            });
+          })
+          .catch((error) => {
+            console.error("Error querying vector:", error);
+          });
+      }
+
+      document.addEventListener(
+        "wheel",
+        function (e) {
+          e.preventDefault();
+          determineScrollDirection(e.deltaX, e.deltaY);
         },
-        body: JSON.stringify({ vector: JSON.parse(vector) }),
-    })
-    .then(response => response.json())
-    .then(items => {
-        // Assuming you have a container with the class 'grid-container'
-        const gridContainer = document.querySelector('.grid-container');
-        // Clear existing items
-        gridContainer.innerHTML = '';
+        { passive: false }
+      );
 
-        // Add new items
-        items.forEach(item => {
-            const gridItem = document.createElement('div');
-            gridItem.className = 'grid-item';
-            gridItem.onclick = function() { queryVector(JSON.stringify(item.vector))};
-            gridItem.setAttribute('data-vector', JSON.stringify(item.vector));
-            const image = document.createElement('img');
-            image.src = item.link;
-            image.alt = "DRESS";
-            gridItem.appendChild(image);
-            gridContainer.appendChild(gridItem);
-        });
-    })
-    .catch(error => {
-        console.error('Error querying vector:', error);
-    });
-    }
+      var lastSwipeTime = 0; // Step 1: Declare a variable to keep track of the last swipe time
 
-    
-    document.addEventListener('wheel', function(e) {
-        e.preventDefault();
-        determineScrollDirection(e.deltaX, e.deltaY);
-    }, { passive: false });
-
-
-    var lastSwipeTime = 0; // Step 1: Declare a variable to keep track of the last swipe time
-
-    function determineScrollDirection(deltaX, deltaY) {
+      function determineScrollDirection(deltaX, deltaY) {
         const currentTime = Date.now(); // Get the current time in milliseconds
         if (currentTime - lastSwipeTime < 1500) {
-            console.log("Swipe too fast, waiting for timeout."); // Optional: Log a message or handle this case as needed
-            return; // Exit the function to prevent the swipe action
+          console.log("Swipe too fast, waiting for timeout."); // Optional: Log a message or handle this case as needed
+          return; // Exit the function to prevent the swipe action
         }
 
         const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-        const gridContainer = document.querySelector('.grid-container');
+        const gridContainer = document.querySelector(".grid-container");
         grid = Array.from(gridContainer.children);
-        let direction = '';
+        let direction = "";
         if (angle >= -22.5 && angle < 22.5) {
-            direction = 'East';
-            queryVector((grid[5].getAttribute('data-vector'))); 
+          direction = "East";
+          queryVector(grid[5].getAttribute("data-vector"));
         } else if (angle >= 22.5 && angle < 67.5) {
-            direction = 'SE';
-            queryVector((grid[8].getAttribute('data-vector'))); 
+          direction = "SE";
+          queryVector(grid[8].getAttribute("data-vector"));
         } else if (angle >= 67.5 && angle < 112.5) {
-            direction = 'South';
-            queryVector((grid[7].getAttribute('data-vector'))); 
+          direction = "South";
+          queryVector(grid[7].getAttribute("data-vector"));
         } else if (angle >= 112.5 && angle < 157.5) {
-            direction = 'SW';
-            queryVector((grid[6].getAttribute('data-vector'))); 
+          direction = "SW";
+          queryVector(grid[6].getAttribute("data-vector"));
         } else if (angle >= -67.5 && angle < -22.5) {
-            direction = 'NE';
-            queryVector((grid[2].getAttribute('data-vector'))); 
+          direction = "NE";
+          queryVector(grid[2].getAttribute("data-vector"));
         } else if (angle >= -112.5 && angle < -67.5) {
-            direction = 'North';
-            queryVector((grid[1].getAttribute('data-vector'))); 
+          direction = "North";
+          queryVector(grid[1].getAttribute("data-vector"));
         } else if (angle >= -157.5 && angle < -112.5) {
-            direction = 'NW';
-            queryVector((grid[0].getAttribute('data-vector'))); 
+          direction = "NW";
+          queryVector(grid[0].getAttribute("data-vector"));
         } else {
-            direction = 'West';
-            queryVector((grid[3].getAttribute('data-vector'))); 
+          direction = "West";
+          queryVector(grid[3].getAttribute("data-vector"));
         }
         console.log("You scrolled in direction: " + direction);
         lastSwipeTime = currentTime; // Update the last swipe time after a successful swipe
+      }
+    </script>
 
-    }
-
-</script>
-
-<script>
+    <!-- <script>
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         if (currentTheme === 'dark') {
@@ -230,7 +323,6 @@
             document.querySelector('.theme-toggle').textContent = 'Light Mode';
         }
     }
-</script>
-
-</body>
+</script> -->
+  </body>
 </html>
