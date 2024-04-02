@@ -4,7 +4,7 @@ import pinecone
 import random
 from algoliasearch.search_client import SearchClient
 # !pip install --upgrade 'algoliasearch>=3.0,<4.0'
-
+# pip install algoliasearch
 
 app = Flask(__name__)
 
