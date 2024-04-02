@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from pinecone import Pinecone
 import pinecone
+from datetime import datetime
 import random
 from algoliasearch.search_client import SearchClient
 # !pip install --upgrade 'algoliasearch>=3.0,<4.0'
@@ -29,6 +30,7 @@ def magicFunction(vector,history):
             )
     things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
     items = things[1:5] + [things[0]] + things[5:]
+    print(datetime.now())
     return jsonify(items)
 
 def smartStart():
@@ -68,6 +70,7 @@ def algoliaSearch():
 @app.route('/', methods=['GET', 'POST'])
 def grid():
     if request.method == 'POST':
+        print(datetime.now())
         data = request.get_json()
         vector = data.get('vector')
         if vector:
