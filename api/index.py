@@ -27,6 +27,18 @@ def algoliaSearch():
         this=algoliaIndex.search("")['hits'][:9]
         things = [{'link': dress["image"], 'vector': index.query(id=dress["image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
         items = things[1:5] + [things[0]] + things[5:]
+    if(len(items)<9):
+            vector = items[0]["vector"]
+            response = index.query(
+                vector=vector,
+                top_k=9,
+                include_values=True
+            )
+            things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+            items = things[1:5] + [things[0]] + things[5:]
+
+            return jsonify(items)
+
     return items
 
 @app.route('/', methods=['GET', 'POST'])
@@ -43,7 +55,6 @@ def grid():
             )
             things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
             items = things[1:5] + [things[0]] + things[5:]
-
 
             return jsonify(items)
         else:
