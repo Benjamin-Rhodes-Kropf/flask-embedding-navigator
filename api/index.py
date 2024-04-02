@@ -21,6 +21,28 @@ def nineNearestNeighbors(vector):
     items = things[1:5] + [things[0]] + things[5:]
     return jsonify(items)
 
+def magicFunction(vector,history):
+    response = index.query(
+                vector=vector,
+                top_k=9,
+                include_values=True
+            )
+    things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+    items = things[1:5] + [things[0]] + things[5:]
+    return jsonify(items)
+
+def smartStart():
+    vector = [random.random() for _ in range(768)]  # Modified line here
+    response = index.query(
+            vector=vector,
+            top_k=9,
+            include_values=True
+    )
+    links = [match["id"] for match in response["matches"]]
+    vectors = [match["values"] for match in response["matches"]]
+    items = list(zip(links, vectors))
+    return render_template('grid.html', items=items)
+
 
 @app.route('/search', methods=['POST'])
 def algoliaSearch():
@@ -50,20 +72,12 @@ def grid():
         vector = data.get('vector')
         if vector:
             vector = list(map(float, vector))
-            return nineNearestNeighbors(vector)
+            history = "how are we gonna track this"
+            return magicFunction(vector,history)
         else:
             return jsonify({'error': 'No vector provided'}), 400
     else:
-        vector = [random.random() for _ in range(768)]  # Modified line here
-        response = index.query(
-            vector=vector,
-            top_k=9,
-            include_values=True
-        )
-        links = [match["id"] for match in response["matches"]]
-        vectors = [match["values"] for match in response["matches"]]
-        items = list(zip(links, vectors))
-        return render_template('grid.html', items=items)
+        return smartStart()
 
 if __name__ == '__main__':
     app.run(debug=True)
