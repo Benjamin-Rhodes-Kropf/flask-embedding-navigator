@@ -22,7 +22,8 @@ def nineNearestNeighbors(vector): # this is good and done
     items = things[1:5] + [things[0]] + things[5:]
     return jsonify(items)
 
-def magicFunction(vector,history): # this is the part we need to do
+def magicFunction(vector,history,clickPos): # this is the part we need to do
+    posForHistory = 8-clickPos
     response = index.query(
                 vector=vector,
                 top_k=9,
@@ -30,7 +31,6 @@ def magicFunction(vector,history): # this is the part we need to do
             )
     things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
     items = things[1:5] + [things[0]] + things[5:]
-    print(datetime.now())
     return jsonify(items)
 
 def smartStart(): # hales' idea
@@ -42,7 +42,8 @@ def smartStart(): # hales' idea
     )
     links = [match["id"] for match in response["matches"]]
     vectors = [match["values"] for match in response["matches"]]
-    items = list(zip(links, vectors))
+    indexes = range(9)
+    items = list(zip(links, vectors, indexes))
     return render_template('grid.html', items=items)
 
 
@@ -70,13 +71,14 @@ def algoliaSearch():
 @app.route('/', methods=['GET', 'POST'])
 def grid():
     if request.method == 'POST':
-        print(datetime.now())
         data = request.get_json()
+        clickPos = data.get('position')
         vector = data.get('vector')
-        if vector:
+        history = data.get('history')
+        if vector and history:
             vector = list(map(float, vector))
-            history = "how are we gonna track this"
-            return magicFunction(vector,history)
+            history = list(map(float, history))
+            return magicFunction(vector,history,clickPos)
         else:
             return jsonify({'error': 'No vector provided'}), 400
     else:

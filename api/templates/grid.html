@@ -158,11 +158,12 @@
           />
       </div>
       <div class="grid-container">
-        {% for link, vector in items %}
+        {% for link, vector, index in items %}
         <div
           class="grid-item"
-          onclick="queryVector('{{ vector|tojson|safe }}')"
+          onclick="queryVector('{{ vector|tojson|safe }}','{{ index }}')"
           data-vector="{{ vector }}"
+          position = "{{ index }}"
         >
           <img src="{{ link }}" alt="Dress {{ loop.index }}" />
         </div>
@@ -204,13 +205,15 @@
             gridContainer.innerHTML = "";
 
             // Add new items
-            items.forEach((item) => {
+            items.forEach((item,index) => {
               const gridItem = document.createElement("div");
               gridItem.className = "grid-item";
               gridItem.onclick = function () {
-                queryVector(JSON.stringify(item.vector));
+                queryVector(JSON.stringify(item.vector),index);
               };
               gridItem.setAttribute("data-vector", JSON.stringify(item.vector));
+              gridItem.setAttribute("position", index);
+
               const image = document.createElement("img");
               image.src = item.link;
               image.alt = "DRESS";
@@ -223,14 +226,17 @@
           });
       }
 
-      function queryVector(vector) {
-        event.preventDefault(); // Prevent default link navigation
+      function queryVector(vector,pos) {
+        event.preventDefault();
+        const gridItems = document.querySelectorAll(".grid-item");
+        const fifthGridItem = gridItems[4];
+        const dataVector = fifthGridItem.getAttribute('data-vector');
         fetch("/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ vector: JSON.parse(vector) }),
+          body: JSON.stringify({ vector: JSON.parse(vector), history: JSON.parse(dataVector), position: JSON.parse(pos)}),
         })
           .then((response) => response.json())
           .then((items) => {
@@ -240,13 +246,14 @@
             gridContainer.innerHTML = "";
 
             // Add new items
-            items.forEach((item) => {
+            items.forEach((item,index) => {
               const gridItem = document.createElement("div");
               gridItem.className = "grid-item";
               gridItem.onclick = function () {
-                queryVector(JSON.stringify(item.vector));
+                queryVector(JSON.stringify(item.vector),index);
               };
               gridItem.setAttribute("data-vector", JSON.stringify(item.vector));
+              gridItem.setAttribute("position",index)
               const image = document.createElement("img");
               image.src = item.link;
               image.alt = "DRESS";
@@ -283,28 +290,28 @@
         let direction = "";
         if (angle >= -22.5 && angle < 22.5) {
           direction = "East";
-          queryVector(grid[5].getAttribute("data-vector"));
+          queryVector(grid[5].getAttribute("data-vector"),5);
         } else if (angle >= 22.5 && angle < 67.5) {
           direction = "SE";
-          queryVector(grid[8].getAttribute("data-vector"));
+          queryVector(grid[8].getAttribute("data-vector"),8);
         } else if (angle >= 67.5 && angle < 112.5) {
           direction = "South";
-          queryVector(grid[7].getAttribute("data-vector"));
+          queryVector(grid[7].getAttribute("data-vector"),7);
         } else if (angle >= 112.5 && angle < 157.5) {
           direction = "SW";
-          queryVector(grid[6].getAttribute("data-vector"));
+          queryVector(grid[6].getAttribute("data-vector"),6);
         } else if (angle >= -67.5 && angle < -22.5) {
           direction = "NE";
-          queryVector(grid[2].getAttribute("data-vector"));
+          queryVector(grid[2].getAttribute("data-vector"),2);
         } else if (angle >= -112.5 && angle < -67.5) {
           direction = "North";
-          queryVector(grid[1].getAttribute("data-vector"));
+          queryVector(grid[1].getAttribute("data-vector"),1);
         } else if (angle >= -157.5 && angle < -112.5) {
           direction = "NW";
-          queryVector(grid[0].getAttribute("data-vector"));
+          queryVector(grid[0].getAttribute("data-vector"),0);
         } else {
           direction = "West";
-          queryVector(grid[3].getAttribute("data-vector"));
+          queryVector(grid[3].getAttribute("data-vector"),3);
         }
         console.log("You scrolled in direction: " + direction);
         lastSwipeTime = currentTime; // Update the last swipe time after a successful swipe
