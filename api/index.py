@@ -12,7 +12,7 @@ app = Flask(__name__)
 pc = pinecone.Pinecone(api_key="b76cad94-53ae-4524-9156-b3450a92ce4a", environment="gcp-starter")
 index = pc.Index("dresses")
 
-def nineNearestNeighbors(vector):
+def nineNearestNeighbors(vector): # this is good and done
     response = index.query(
                 vector=vector,
                 top_k=9,
@@ -22,7 +22,7 @@ def nineNearestNeighbors(vector):
     items = things[1:5] + [things[0]] + things[5:]
     return jsonify(items)
 
-def magicFunction(vector,history):
+def magicFunction(vector,history): # this is the part we need to do
     response = index.query(
                 vector=vector,
                 top_k=9,
@@ -33,7 +33,7 @@ def magicFunction(vector,history):
     print(datetime.now())
     return jsonify(items)
 
-def smartStart():
+def smartStart(): # hales' idea
     vector = [random.random() for _ in range(768)]  # Modified line here
     response = index.query(
             vector=vector,
