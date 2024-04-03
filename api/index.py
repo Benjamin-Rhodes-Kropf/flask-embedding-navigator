@@ -22,15 +22,53 @@ def nineNearestNeighbors(vector): # this is good and done
     items = things[1:5] + [things[0]] + things[5:]
     return jsonify(items)
 
-def magicFunction(vector,history,clickPos): # this is the part we need to do
-    posForHistory = 8-clickPos
+def nextVector(vector,history):
+    differenceVector = [v1 - v2 for v1, v2 in zip(vector, history)]
+    nextVector = [v1 + v2 for v1, v2 in zip(vector,differenceVector)]
     response = index.query(
-                vector=vector,
-                top_k=9,
-                include_values=True
-            )
+        vector=nextVector,
+        top_k=3,
+        include_values=True
+    )
     things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
-    items = things[1:5] + [things[0]] + things[5:]
+    for thing in things:
+        if thing['vector'] not in [vector,history]:
+            return thing
+
+def magicFunction(vector, history, clickPos):
+    posForHistory = 8 - clickPos
+    response = index.query(
+        vector=vector,
+        top_k=30,
+        include_values=True
+    )
+    things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+    items = [None] * 9
+    done = 0
+    items[clickPos] = nextVector(vector,history)
+    for i, thing in enumerate(things):
+        if thing['vector'] == vector:
+            items[4] = thing
+            done+=1
+            if done == 2:
+                break
+        elif thing['vector'] == history:
+            posForHistory = max(0, min(len(items) - 1, posForHistory))
+            items[posForHistory] = thing
+            done+=1
+            if done == 2:
+                break
+            
+    for thing in things:
+        if thing not in items:
+            for j in range(len(items)):
+                if items[j] is None:
+                    items[j] = thing
+                    if(len([item for item in items if item is not None])==9):
+                        return jsonify(items)
+                    break
+    
+    print("if it reached here, there was a problem")
     return jsonify(items)
 
 def smartStart(): # hales' idea
