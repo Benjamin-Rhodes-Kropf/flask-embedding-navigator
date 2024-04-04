@@ -24,7 +24,19 @@ def nineNearestNeighbors(vector): # this is good and done
 
 def nextVector(vector,history):
     differenceVector = [v1 - v2 for v1, v2 in zip(vector, history)]
-    nextVector = [v1 + v2 for v1, v2 in zip(vector,differenceVector)]
+    nextVector = [(v1 + v2) for v1, v2 in zip(vector,differenceVector)]
+    for i in range(3):
+        print(i)
+        response = index.query(
+            vector=nextVector,
+            top_k=1,
+            include_values=True
+        )
+        things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+        if things[0]['vector'] not in [vector,history]:
+            return things[0]
+        else:
+            nextVector = [v1 + v2 for v1, v2 in zip(nextVector,differenceVector)]
     response = index.query(
         vector=nextVector,
         top_k=3,
@@ -32,6 +44,7 @@ def nextVector(vector,history):
     )
     things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
     for thing in things:
+        print("fallbackItem")
         if thing['vector'] not in [vector,history]:
             return thing
 
