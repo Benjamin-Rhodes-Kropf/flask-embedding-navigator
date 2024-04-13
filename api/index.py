@@ -22,35 +22,17 @@ def nineNearestNeighbors(vector): # this is good and done
     items = things[1:5] + [things[0]] + things[5:]
     return jsonify(items)
 
-<<<<<<< HEAD
 def nextVector(vector,history):
     differenceVector = [v1 - v2 for v1, v2 in zip(vector, history)]
     nextVector = [(v1 + v2) for v1, v2 in zip(vector,differenceVector)]
-    for i in range(3):
-        print(i)
-        response = index.query(
-            vector=nextVector,
-            top_k=1,
-            include_values=True
-        )
-        things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
-        if things[0]['vector'] not in [vector,history]:
-            return things[0]
-        else:
-            nextVector = [v1 + v2 for v1, v2 in zip(nextVector,differenceVector)]
-=======
-def magicFunction(vector,history,clickPos): # this is the part we need to do
-    posForHistory = 8-clickPos
->>>>>>> parent of 3216739 (added vague directionality)
     response = index.query(
-                vector=vector,
+                vector=nextVector,
                 top_k=9,
                 include_values=True
             )
     things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
-<<<<<<< HEAD
     for thing in things:
-        print("fallbackItem")
+        print("trying")
         if thing['vector'] not in [vector,history]:
             return thing
 
@@ -88,9 +70,6 @@ def magicFunction(vector, history, clickPos):
                     break
     
     print("if it reached here, there was a problem")
-=======
-    items = things[1:5] + [things[0]] + things[5:]
->>>>>>> parent of 3216739 (added vague directionality)
     return jsonify(items)
 
 def smartStart(): # hales' idea
@@ -117,11 +96,11 @@ def algoliaSearch():
     this = None
     try:
         this=initial['hits'][:9]
-        things = [{'link': dress["image"], 'vector': index.query(id=dress["image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
+        things = [{'link': dress["Image"], 'vector': index.query(id=dress["Image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
         items = things[1:5] + [things[0]] + things[5:]
     except:
         this=algoliaIndex.search("")['hits'][:9]
-        things = [{'link': dress["image"], 'vector': index.query(id=dress["image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
+        things = [{'link': dress["Image"], 'vector': index.query(id=dress["Image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
         items = things[1:5] + [things[0]] + things[5:]
     if(len(items)<9):
             return nineNearestNeighbors(items[0]["vector"])
