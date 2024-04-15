@@ -265,6 +265,23 @@
             console.error("Error querying vector:", error);
           });
       }
+      document.addEventListener('DOMContentLoaded', function () {
+    
+        const gridContainer = document.querySelector('.grid-container');
+    
+    // Prevent the default right-click menu and open the image link in a new tab
+    gridContainer.addEventListener('contextmenu', function(event) {
+        event.preventDefault(); // Prevent the default context menu
+        if (event.target.tagName === 'IMG') { // Check if the clicked element is an image
+            const imgSrc = event.target.src; // Get the source of the image
+            const productId = imgSrc.match(/(\d+)\.jpg$/)[1]; // Extract the product ID from the image URL
+            const productPageUrl = `https://www.lulus.com/products/${productId}.html`; // Construct the product page URL
+            window.open(productPageUrl, '_blank'); // Open the product page link in a new tab
+        }
+    }, false);
+});
+
+
 
       document.addEventListener(
         "wheel",
