@@ -32,7 +32,6 @@ def nextVector(vector,history):
             )
     things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
     for thing in things:
-        print("trying")
         if thing['vector'] not in [vector,history]:
             return thing
 
