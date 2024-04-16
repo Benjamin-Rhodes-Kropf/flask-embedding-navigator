@@ -36,13 +36,21 @@ def nextVector(vector,history):
             return thing
 
 def magicFunction(vector, history, clickPos, zoom):
-    print(zoom)
+    tagMap = {5:0,4:"A",3:"B",2:"C",1:"D",0:"E"}
+    zoomLetter=(tagMap[zoom])
     posForHistory = 8 - clickPos
-    response = index.query(
-        vector=vector,
-        top_k=30,
-        include_values=True
-    )
+    if(zoom == 5):
+        response = index.query(
+            vector=vector,
+            top_k=9,
+            include_values=True
+        )
+    else:
+        response = index.query(
+            vector=vector,
+            top_k=200,
+            include_values=True
+        )
     things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
     items = [None] * 9
     done = 0
@@ -79,10 +87,12 @@ def smartStart(): # hales' idea
             top_k=9,
             include_values=True
     )
-    links = [match["id"] for match in response["matches"]]
-    vectors = [match["values"] for match in response["matches"]]
-    indexes = range(9)
-    items = list(zip(links, vectors, indexes))
+
+    random_vectors = [[random.random() for _ in range(768)] for _ in range(9)]
+
+    responses = [index.query(vector=vector, top_k=1,include_values=True) for vector in random_vectors]
+    items = [(response["matches"][0]["id"], response["matches"][0]["values"], index) for index, response in enumerate(responses)]
+
     return render_template('grid.html', items=items)
 
 
