@@ -175,11 +175,10 @@
         <input
           type="range"
           id="zoom-slider"
-          min="0.5"
+          min="0"
           max="10"
-          step="0.1"
-          value="1"
-          onchange="adjustZoom(this.value)"
+          step="1"
+          value="0"
         />
       </div>
     </div>
@@ -188,6 +187,12 @@
 
     <script>
       function searchItems(query) {
+        var zoomSlider = document.getElementById("zoom-slider");
+        // Get the value of the zoom slider
+        var zoomValue = zoomSlider.value;
+        // Now you can use the zoomValue variable to access the current value of the zoom slider
+        console.log("Zoom value:", zoomValue);
+
         console.log("Search")
         event.preventDefault(); // Prevent default link navigation
         fetch("/search", {
@@ -227,6 +232,11 @@
       }
 
       function queryVector(vector,pos) {
+        var zoomSlider = document.getElementById("zoom-slider");
+        // Get the value of the zoom slider
+        var zoomValue = zoomSlider.value;
+        // Now you can use the zoomValue variable to access the current value of the zoom slider
+        console.log("Zoom value:", zoomValue);
         event.preventDefault();
         const gridItems = document.querySelectorAll(".grid-item");
         const fifthGridItem = gridItems[4];
