@@ -35,7 +35,8 @@ def nextVector(vector,history):
         if thing['vector'] not in [vector,history]:
             return thing
 
-def magicFunction(vector, history, clickPos):
+def magicFunction(vector, history, clickPos, zoom):
+    print(zoom)
     posForHistory = 8 - clickPos
     response = index.query(
         vector=vector,
@@ -113,10 +114,11 @@ def grid():
         clickPos = data.get('position')
         vector = data.get('vector')
         history = data.get('history')
+        zoom = data.get('zoom')
         if vector and history:
             vector = list(map(float, vector))
             history = list(map(float, history))
-            return magicFunction(vector,history,clickPos)
+            return magicFunction(vector,history,clickPos,zoom)
         else:
             return jsonify({'error': 'No vector provided'}), 400
     else:

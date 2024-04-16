@@ -187,12 +187,6 @@
 
     <script>
       function searchItems(query) {
-        var zoomSlider = document.getElementById("zoom-slider");
-        // Get the value of the zoom slider
-        var zoomValue = zoomSlider.value;
-        // Now you can use the zoomValue variable to access the current value of the zoom slider
-        console.log("Zoom value:", zoomValue);
-
         console.log("Search")
         event.preventDefault(); // Prevent default link navigation
         fetch("/search", {
@@ -233,10 +227,9 @@
 
       function queryVector(vector,pos) {
         var zoomSlider = document.getElementById("zoom-slider");
-        // Get the value of the zoom slider
         var zoomValue = zoomSlider.value;
-        // Now you can use the zoomValue variable to access the current value of the zoom slider
         console.log("Zoom value:", zoomValue);
+
         event.preventDefault();
         const gridItems = document.querySelectorAll(".grid-item");
         const fifthGridItem = gridItems[4];
@@ -246,7 +239,7 @@
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ vector: JSON.parse(vector), history: JSON.parse(dataVector), position: JSON.parse(pos)}),
+          body: JSON.stringify({ vector: JSON.parse(vector), history: JSON.parse(dataVector), position: JSON.parse(pos), zoom:JSON.parse(zoomValue)}),
         })
           .then((response) => response.json())
           .then((items) => {
