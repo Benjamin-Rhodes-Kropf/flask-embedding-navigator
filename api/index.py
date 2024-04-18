@@ -45,6 +45,13 @@ def magicFunction(vector, history, clickPos, zoom):
             top_k=9,
             include_values=True
         )
+    elif(zoomLetter == 'E'):
+        response = index.query(
+            vector=vector,
+            top_k=250,
+            include_values=True
+        )
+        
     else:
         response = index.query(
             vector=vector,
