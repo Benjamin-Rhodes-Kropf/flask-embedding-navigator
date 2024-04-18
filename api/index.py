@@ -49,6 +49,38 @@ def magicFunction(vector, history, clickPos, zoom):
         things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
         items = [None] * 9
         done = 0
+    elif(zoomLetter == 'F'):
+        print("zoom F")
+        response = index.query(
+            vector=vector,
+            top_k=150,
+            include_values=True,
+            include_metadata=True
+        )
+        # print the value of E FOR EACH after the query
+        
+        clustersSoFar = []
+        thingsSoFar = []
+        
+        # give me the first nine values of E which are diffrent in an array
+        counter = 0
+        for match in response["matches"]:
+            counter += 1
+            if match["metadata"]["F"] not in clustersSoFar:
+                clustersSoFar.append(match["metadata"]["F"])
+                thingsSoFar.append({'link': match["id"], 'vector': match["values"]})
+            
+            # if clusters so far has more than 9 values, break
+            if len(clustersSoFar) == 9:
+                break
+
+        # print the clusters so far
+        print(clustersSoFar)
+        print("counter of skips for F: ", counter)
+
+        things = thingsSoFar
+        items = [None] * 9
+        done = 0
     elif(zoomLetter == 'E'):
         print("zoom E")
         response = index.query(
