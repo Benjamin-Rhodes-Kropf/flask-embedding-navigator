@@ -4,7 +4,7 @@
     <meta name='impact-site-verification' value='ce0401b0-3251-4782-b63d-1e8f0e5f9a93'>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Dress Tile Search</title>
     <style>
       :root {
@@ -22,6 +22,8 @@
       body,
       html {
         /* height: 100%; */
+        width: 100vw;
+        height: 100vh;
         margin: 0;
         display: flex;
         justify-content: center;
@@ -42,6 +44,7 @@
       .grid-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr); /* Always three columns */
+        grid-template-rows: repeat(3, 1fr); /* Always three rows */
         padding: min(0.5vw, (2/3) * 0.5vh);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
@@ -54,6 +57,7 @@
         align-items: center; /* Center the child vertically */
       }
 
+        
       .grid-item img {
         width: 100%; /* Full width */
         height: auto; /* Auto height to maintain aspect ratio */
@@ -135,6 +139,7 @@
         margin-bottom: 20px;
       }
 
+
       .theme-toggle {
         position: fixed;
         top: 20px;
@@ -147,6 +152,47 @@
         border-radius: 5px;
         font-size: 16px;
       }
+      @media screen and (min-aspect-ratio: 18/9) {
+        .grid-container {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr); /* Always three columns */
+          grid-template-rows: repeat(3, 1fr); /* Always three rows */
+          padding: min(0.5vw, (2/3) * 0.5vh);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
+          background: white;
+          height: 80vh;
+          width: calc(0.66*80vh);
+          margin: auto; /* Center the grid horizontally */
+          justify-content: center; /* Center the child horizontally */
+          align-items: center; /* Center the child vertically */
+        }
+
+        .search-container {
+          --widthe: calc(0.66*80vh)-10px;
+          width: var(--widthe); /* Use the same width as the grid container */
+          text-align: center;
+          margin-top: 20px;
+          align-self: end;
+        }
+        .zoom-container {
+          --grid-width: calc(0.66*80vh);
+          text-align: center;
+          width: var(--grid-width);
+          /* align-self: flex-end; Aligns the item at the top of the container */
+        }
+
+        #search-input {
+          --this-width: calc(0.66*80vh);
+          width: var(--this-width);
+          padding: 10px;
+          margin: auto; /* Center the slider */
+          font-size: 14px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          align-self: flex-end;
+        }
+    }
     </style>
   </head>
   <body>
