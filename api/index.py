@@ -40,27 +40,178 @@ def magicFunction(vector, history, clickPos, zoom):
     zoomLetter=(tagMap[zoom])
     posForHistory = 8 - clickPos
     if(zoom == 5):
+        print("zoom 5")
         response = index.query(
             vector=vector,
             top_k=9,
             include_values=True
         )
+        things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
+        items = [None] * 9
+        done = 0
     elif(zoomLetter == 'E'):
+        print("zoom E")
         response = index.query(
             vector=vector,
-            top_k=250,
-            include_values=True
+            top_k=150,
+            include_values=True,
+            include_metadata=True
         )
+        # print the value of E FOR EACH after the query
         
-    else:
+        clustersSoFar = []
+        thingsSoFar = []
+        
+        # give me the first nine values of E which are diffrent in an array
+        counter = 0
+        for match in response["matches"]:
+            counter += 1
+            if match["metadata"]["E"] not in clustersSoFar:
+                clustersSoFar.append(match["metadata"]["E"])
+                thingsSoFar.append({'link': match["id"], 'vector': match["values"]})
+            
+            # if clusters so far has more than 9 values, break
+            if len(clustersSoFar) == 9:
+                break
+
+        # print the clusters so far
+        print(clustersSoFar)
+        print("counter of skips for E: ", counter)
+
+        things = thingsSoFar
+        items = [None] * 9
+        done = 0
+    elif(zoomLetter == 'D'):
+        print("zoom D")
         response = index.query(
             vector=vector,
-            top_k=200,
-            include_values=True
+            top_k=150,
+            include_values=True,
+            include_metadata=True
         )
-    things = [{'link': match["id"], 'vector': match["values"]} for match in response["matches"]]
-    items = [None] * 9
-    done = 0
+        # print the value of E FOR EACH after the query
+        
+        clustersSoFar = []
+        thingsSoFar = []
+        
+        # give me the first nine values of E which are diffrent in an array
+        counter = 0
+        for match in response["matches"]:
+            counter += 1
+            if match["metadata"]["D"] not in clustersSoFar:
+                clustersSoFar.append(match["metadata"]["D"])
+                thingsSoFar.append({'link': match["id"], 'vector': match["values"]})
+            
+            # if clusters so far has more than 9 values, break
+            if len(clustersSoFar) == 9:
+                break
+
+        # print the clusters so far
+        print(clustersSoFar)
+        print("counter of skips for D: ", counter)
+
+        things = thingsSoFar
+        items = [None] * 9
+        done = 0
+    elif(zoomLetter == 'C'):
+        print("zoom C")
+        response = index.query(
+            vector=vector,
+            top_k=70,
+            include_values=True,
+            include_metadata=True
+        )
+        # print the value of E FOR EACH after the query
+        
+        clustersSoFar = []
+        thingsSoFar = []
+        
+        # give me the first nine values of E which are diffrent in an array
+        counter = 0
+        for match in response["matches"]:
+            counter += 1
+            if match["metadata"]["C"] not in clustersSoFar:
+                clustersSoFar.append(match["metadata"]["C"])
+                thingsSoFar.append({'link': match["id"], 'vector': match["values"]})
+            
+            # if clusters so far has more than 9 values, break
+            if len(clustersSoFar) == 9:
+                break
+
+        # print the clusters so far
+        print(clustersSoFar)
+        print("counter of skips for C: ", counter)
+
+        things = thingsSoFar
+        items = [None] * 9
+        done = 0
+    elif(zoomLetter == 'B'):
+        print("zoom B")
+        response = index.query(
+            vector=vector,
+            top_k=70,
+            include_values=True,
+            include_metadata=True
+        )
+        # print the value of E FOR EACH after the query
+        
+        clustersSoFar = []
+        thingsSoFar = []
+        
+        # give me the first nine values of E which are diffrent in an array
+        counter = 0
+        for match in response["matches"]:
+            counter += 1
+            if match["metadata"]["B"] not in clustersSoFar:
+                clustersSoFar.append(match["metadata"]["B"])
+                thingsSoFar.append({'link': match["id"], 'vector': match["values"]})
+            
+            # if clusters so far has more than 9 values, break
+            if len(clustersSoFar) == 9:
+                break
+
+        # print the clusters so far
+        print(clustersSoFar)
+        print("counter of skips for B: ", counter)
+
+        things = thingsSoFar
+        items = [None] * 9
+        done = 0
+    elif(zoomLetter == 'A'):
+        print("zoom A")
+        response = index.query(
+            vector=vector,
+            top_k=70,
+            include_values=True,
+            include_metadata=True
+        )
+        # print the value of E FOR EACH after the query
+        
+        clustersSoFar = []
+        thingsSoFar = []
+        
+        # give me the first nine values of E which are diffrent in an array
+        counter = 0
+        for match in response["matches"]:
+            counter += 1
+            if match["metadata"]["A"] not in clustersSoFar:
+                clustersSoFar.append(match["metadata"]["A"])
+                thingsSoFar.append({'link': match["id"], 'vector': match["values"]})
+            
+            # if clusters so far has more than 9 values, break
+            if len(clustersSoFar) == 9:
+                break
+
+        # print the clusters so far
+        print(clustersSoFar)
+        print("counter of skips for A: ", counter)
+
+        things = thingsSoFar
+        items = [None] * 9
+        done = 0
+    else:
+        print("wtf man")
+
     items[clickPos] = nextVector(vector,history)
     for i, thing in enumerate(things):
         if thing['vector'] == vector:
@@ -116,9 +267,12 @@ def algoliaSearch():
         things = [{'link': dress["Image"], 'vector': index.query(id=dress["Image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
         items = things[1:5] + [things[0]] + things[5:]
     except:
-        this=algoliaIndex.search("")['hits'][:9]
-        things = [{'link': dress["Image"], 'vector': index.query(id=dress["Image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
-        items = things[1:5] + [things[0]] + things[5:]
+        try:
+            this=algoliaIndex.search("")['hits'][:9]
+            things = [{'link': dress["Image"], 'vector': index.query(id=dress["Image"], top_k=5, include_values=True)['matches'][0]['values']} for dress in this]
+            items = things[1:5] + [things[0]] + things[5:]
+        except:
+            smartStart()
     if(len(items)<9):
             return nineNearestNeighbors(items[0]["vector"])
 
