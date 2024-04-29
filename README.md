@@ -1,4 +1,4 @@
-[![Check out the project here!](https://dress-tile-search-59d35ce8ee49.herokuapp.com/)]
+![Check out the project here!](https://dress-tile-search-59d35ce8ee49.herokuapp.com/)
 
 # Flask Embedding Navigator
 
